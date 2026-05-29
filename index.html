@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>May 2026 Agency Audit ✨</title>
-    <!-- Cute, clean font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <!-- EmailJS and PDF Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #FFF0F5 0%, #E6E6FA 100%);
             --card-bg: #ffffff;
-            --primary-pink: #FFB7B2;
+            --primary-pink: #FF9AA2;
             --accent-purple: #B5E2FA;
             --text-color: #4A4A4A;
             --border-radius: 20px;
@@ -39,9 +42,13 @@
             box-sizing: border-box;
         }
 
+        #audit-page {
+            padding: 10px;
+        }
+
         h1 {
             text-align: center;
-            color: #FF9AA2;
+            color: var(--primary-pink);
             font-size: 2rem;
             margin-bottom: 5px;
         }
@@ -98,45 +105,42 @@
             gap: 15px;
         }
 
-        /* Photo Upload Styling */
-        .photo-uploader {
-            border: 2px dashed #CBD5E1;
-            border-radius: var(--border-radius);
-            padding: 20px;
+        /* Image Frame Styling */
+        .image-frame {
             text-align: center;
+            margin: 25px 0;
             background: #FFF9FA;
-            cursor: pointer;
-            position: relative;
-            margin-bottom: 25px;
-            transition: border-color 0.3s;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            border: 2px solid #FFE4E6;
         }
 
-        .photo-uploader:hover {
-            border-color: #FF9AA2;
-        }
-
-        .photo-uploader input[type="file"] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .preview-img {
+        .display-img {
             max-width: 100%;
-            max-height: 250px;
+            max-height: 350px;
             border-radius: 12px;
-            display: none;
-            margin: 10px auto 0;
             object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        .upload-text {
-            font-size: 0.9rem;
-            color: #888;
+        /* Love Note Box */
+        .love-note {
+            background: #FFF0F2;
+            border: 2px dashed #FFB7B2;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 40px;
+            line-height: 1.6;
+            font-size: 0.98rem;
+            color: #555;
+        }
+
+        .loading-timeline {
+            text-align: center;
+            font-weight: 700;
+            color: #D65A60;
+            margin-top: 15px;
+            font-size: 1.05rem;
         }
 
         /* Action Button */
@@ -145,31 +149,29 @@
             margin-top: 40px;
         }
 
-        .print-btn {
+        .submit-btn {
             background: linear-gradient(135deg, #FF9AA2 0%, #FFB7B2 100%);
             color: white;
             border: none;
-            padding: 14px 35px;
+            padding: 16px 40px;
             font-family: 'Quicksand', sans-serif;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 700;
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(255, 154, 162, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
         }
 
-        .print-btn:hover {
+        .submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(255, 154, 162, 0.6);
         }
 
-        /* Print styling so it saves beautifully as a PDF */
         @media print {
             body { background: none; padding: 0; }
             .container { box-shadow: none; padding: 0; max-width: 100%; }
-            .print-btn, .photo-uploader input, .upload-text { display: none; }
-            .photo-uploader { border: none; padding: 0; }
+            .btn-container { display: none; }
             input, textarea { border: none; background: none; padding: 5px 0; }
         }
     </style>
@@ -177,94 +179,152 @@
 <body>
 
 <div class="container">
-    <h1>✨ May 2026 Agency Audit ✨</h1>
-    <p class="subtitle">A safe space to celebrate your growth, look at the data, and plan ahead.</p>
+    <!-- Everything inside this div gets turned into the PDF download -->
+    <div id="audit-page">
+        
+        <h1>✨ May 2026 Agency Audit ✨</h1>
+        <p class="subtitle">A safe space to celebrate your growth, look at the data, and plan ahead.</p>
 
-    <!-- Motivational Photo Box 1 -->
-    <div class="photo-uploader">
-        <span class="upload-text">📸 Click to upload a mood board or selfie that represents your May energy!</span>
-        <input type="file" accept="image/*" onchange="previewImage(event, 'preview1')">
-        <img id="preview1" class="preview-img" src="#" alt="May Energy">
-    </div>
-
-    <h2>Phase 1: The Human Element 🌸</h2>
-    
-    <div class="row">
-        <div class="form-group">
-            <label>Wellbeing Score (1-10)</label>
-            <input type="number" min="1" max="10" placeholder="How is your energy?">
+        <!-- Image 1: Just Her -->
+        <div class="image-frame">
+            <img src="her.jpg" class="display-img" alt="Our Favorite CEO ✨">
         </div>
-        <div class="form-group">
-            <label>Active Client Count</label>
-            <input type="number" placeholder="Total clients in May">
+
+        <h2>Phase 1: The Human Element 🌸</h2>
+        
+        <div class="row">
+            <div class="form-group">
+                <label>Wellbeing Score (1-10)</label>
+                <input type="number" id="wellbeing" min="1" max="10" placeholder="How is your energy?">
+            </div>
+            <div class="form-group">
+                <label>Active Client Count</label>
+                <input type="number" id="client_count" placeholder="Total clients in May">
+            </div>
         </div>
+
+        <div class="form-group">
+            <label>The Happiness Highlight 🥰</label>
+            <textarea id="happiness" rows="3" placeholder="What is one specific moment this month that genuinely made you happy?"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>The Pride Point 🏆</label>
+            <textarea id="pride" rows="3" placeholder="What are you most proud of achieving or handling this month?"></textarea>
+        </div>
+
+        <h2>Phase 2: The Money & The Clients 💸</h2>
+
+        <div class="form-group">
+            <label>Total Revenue Generated (May 1 - May 31)</label>
+            <input type="text" id="revenue" placeholder="e.g., $5,000">
+        </div>
+
+        <div class="form-group">
+            <label>Top 3 High-Paying Clients 🚀</label>
+            <input type="text" id="top_clients" placeholder="List your top 3 main accounts...">
+        </div>
+
+        <div class="form-group">
+            <label>Top 3 Expenses Last Month 📉</label>
+            <input type="text" id="expenses" placeholder="Software, tools, subscriptions...">
+        </div>
+
+        <h2>Phase 3: Systems & The Future 🔮</h2>
+
+        <div class="form-group">
+            <label>The May Optimization ⚙️</label>
+            <textarea id="optimization" rows="3" placeholder="What is one process, system, or habit you improved this month?"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>The June 2026 Target 🎯</label>
+            <textarea id="june_goal" rows="3" placeholder="What is ONE specific, measurable goal for next month?"></textarea>
+        </div>
+
+        <!-- The Warm Custom Message Box -->
+        <div class="love-note">
+            Thank you <strong>Fidha</strong> for completing this little audit session with us. <br><br>
+            Rabee and Hawa are very happy with the improvement you have made in the previous month and we are considering keeping your cute face in the team a little longer <em>(till the end of time)</em> and Hawa CO. especially wishes to tell you that you have done a very good job and that she is proud of you. <br><br>
+            Also, Rabee wishes to let you know, to remember to drink plenty of water, take care of your health and always be the positive dhudhu that I met and loved from that special day onwards. <br><br>
+            Lovingly, yours and yours alone,<br>
+            <strong>Rabee and Hawa</strong>
+        </div>
+
+        <!-- Image 2: Both of You -->
+        <div class="image-frame" style="margin-top: 30px;">
+            <img src="us.jpg" class="display-img" alt="Happily Ever After">
+            <div class="loading-timeline">
+                💍 Engagement loading... June-July 2026 <br>
+                💒 Marriage loading... July-August 2027 <br>
+                <span style="font-size: 1.2rem; display:block; margin-top:10px;">Happy, I can't wait! :)</span>
+            </div>
+        </div>
+
     </div>
 
-    <div class="form-group">
-        <label>The Happiness Highlight 🥰</label>
-        <textarea rows="3" placeholder="What is one specific moment this month that genuinely made you happy?"></textarea>
-    </div>
-
-    <div class="form-group">
-        <label>The Pride Point 🏆</label>
-        <textarea rows="3" placeholder="What are you most proud of achieving or handling this month?"></textarea>
-    </div>
-
-    <h2>Phase 2: The Money & The Clients 💸</h2>
-
-    <div class="form-group">
-        <label>Total Revenue Generated (May 1 - May 31)</label>
-        <input type="text" placeholder="e.g., $5,000">
-    </div>
-
-    <div class="form-group">
-        <label>Top 3 High-Paying Clients 🚀</label>
-        <input type="text" placeholder="1. Client Name - Amount" style="margin-bottom: 8px;">
-        <input type="text" placeholder="2. Client Name - Amount" style="margin-bottom: 8px;">
-        <input type="text" placeholder="3. Client Name - Amount">
-    </div>
-
-    <div class="form-group">
-        <label>Top 3 Expenses Last Month 📉</label>
-        <input type="text" placeholder="1. Software/Team - Amount" style="margin-bottom: 8px;">
-        <input type="text" placeholder="2. Software/Team - Amount" style="margin-bottom: 8px;">
-        <input type="text" placeholder="3. Software/Team - Amount">
-    </div>
-
-    <!-- Motivational Photo Box 2 -->
-    <div class="photo-uploader">
-        <span class="upload-text">✨ Click to upload a screenshot of a great client review or win! ✨</span>
-        <input type="file" accept="image/*" onchange="previewImage(event, 'preview2')">
-        <img id="preview2" class="preview-img" src="#" alt="Client Win">
-    </div>
-
-    <h2>Phase 3: Systems & The Future 🔮</h2>
-
-    <div class="form-group">
-        <label>The May Optimization ⚙️</label>
-        <textarea rows="3" placeholder="What is one process, system, or habit you improved this month to work smarter?"></textarea>
-    </div>
-
-    <div class="form-group">
-        <label>The June 2026 Target 🎯</label>
-        <textarea rows="3" placeholder="What is ONE specific, measurable goal for next month? (Keep it hyper-focused!)"></textarea>
-    </div>
-
+    <!-- Action Button -->
     <div class="btn-container">
-        <button class="print-btn" onclick="window.print()">💖 Save / Print My Audit</button>
+        <button class="submit-btn" id="submit-btn" onclick="processAudit()">💖 Complete & Send Report</button>
     </div>
 </div>
 
 <script>
-    // Magic script that lets her upload and view images instantly in her browser
-    function previewImage(event, previewId) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            const output = document.getElementById(previewId);
-            output.src = reader.result;
-            output.style.display = 'block';
+    // Configuration Setup (Replace these with yours!)
+    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; 
+    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+    
+    const MY_EMAIL = "your-email@example.com";
+    const HER_EMAIL = "her-email@example.com";
+
+    // Initialize EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    function processAudit() {
+        const btn = document.getElementById('submit-btn');
+        btn.innerText = "Processing... ✨";
+        btn.disabled = true;
+
+        // 1. Grab all text fields for the email
+        const templateParams = {
+            to_emails: `${MY_EMAIL}, ${HER_EMAIL}`,
+            wellbeing: document.getElementById('wellbeing').value,
+            client_count: document.getElementById('client_count').value,
+            happiness: document.getElementById('happiness').value,
+            pride: document.getElementById('pride').value,
+            revenue: document.getElementById('revenue').value,
+            top_clients: document.getElementById('top_clients').value,
+            expenses: document.getElementById('expenses').value,
+            optimization: document.getElementById('optimization').value,
+            june_goal: document.getElementById('june_goal').value
         };
-        reader.readAsDataURL(event.target.files[0]);
+
+        // 2. Send the data to both emails via EmailJS
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+            .then(function() {
+                // 3. Trigger visual PDF generation for her screen locally
+                const element = document.getElementById('audit-page');
+                const opt = {
+                    margin:       10,
+                    filename:     'Fidha_May_2026_Audit.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().set(opt).from(element).save().then(() => {
+                    alert("✨ Audit successfully submitted, sent to both emails, and saved as a PDF! ✨");
+                    btn.innerText = "💖 Report Sent Successfully!";
+                });
+
+            }, function(error) {
+                console.error("Email error:", error);
+                alert("Email delivery failed, but saving your PDF layout locally right now!");
+                window.print();
+                btn.innerText = "💖 Complete & Send Report";
+                btn.disabled = false;
+            });
     }
 </script>
 
